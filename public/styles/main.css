@@ -1,0 +1,148 @@
+
+      .header{
+        position: fixed;
+        margin: 0;
+        padding: 0;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        height: fit-content;
+        width: fit-content;
+        border-radius: 30px;
+        font-size: 20px;
+        background: radial-gradient(circle at 10% 20%, rgb(0, 0, 0) 0%, rgb(64, 64, 64) 90.2%);;
+      
+      }
+      .header ul{
+        list-style-type: none;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+      }
+   
+      a {
+        text-decoration: none;
+        color: white;
+        
+      }
+
+      footer {
+        position: fixed;
+        bottom: 0;
+        left: 50%;
+      }
+      #about_section{
+       height: 40%;
+       width: 60%;
+       display: flex;
+     align-items: center;
+     justify-content: center;
+    }
+    #about_section p {
+      left: 50%;
+      transform: translateX(30%);
+      font-size: 20px;
+      font-family: "Kaisei HarunoUmi", serif;
+      font-weight :bolder;
+      font-style: normal;      
+      border-radius: 50px;
+      text-align: center;
+      color: white;
+      background: linear-gradient(-180deg, rgba(255,255,255,0.50) 0%, rgba(0,0,0,0.80) 100%); 
+      margin-top: 100px; 
+      padding: 3%; 
+    }
+
+        body{
+        background-image: url("/new_bg.png");
+        background-blend-mode: overlay;
+        font-family: "Kaisei HarunoUmi", serif;
+        font-weight :bolder;
+        font-style: normal;  
+    }
+     
+      .contact li{
+        list-style-type: none;
+        display: flex;
+        margin-left: 50%;
+        justify-content: center;
+        align-items: center;
+        background-image: linear-gradient(to right top, 
+        rgba(90, 57, 153, 0.5),
+        rgba(103, 71, 167, 0.5),
+        rgba(116, 85, 182, 0.5),
+        rgba(129, 99, 196, 0.5),   
+        rgba(142, 114, 211, 0.5),
+        rgba(146, 117, 219, 0.5),
+        rgba(149, 121, 228, 0.5),
+        rgba(153, 124, 236, 0.5),
+        rgba(147, 117, 240, 0.5),
+        rgba(141, 110, 244, 0.5),
+        rgba(134, 102, 247, 0.5),
+        rgba(126, 95, 251, 0.5)
+      );
+      width: fit-content;
+      }
+      li {
+        transition: transform 0.3s ease; 
+      }
+      li:hover {
+        transform: translateY(-5px); 
+      }
+      h2{
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+      h1{
+        background-color: rgba(255, 255, 255, 0.6);
+      }
+      #card{
+        display: grid;
+        position: relative;
+        grid-template-columns: repeat(3 , 3fr);
+        grid-template-rows: auto;
+        margin-top: 100px;
+        margin-left: 4%;
+      
+      }
+      
+      #card img{
+        
+          height: 200px;
+          width: 200px;
+      }
+      .card1{
+
+        margin-top: 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .card1 a{
+        color: black;
+        
+      }
+
+      .descriptionCard1{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-top: 6%;     
+        margin-bottom: 6%; 
+        background: linear-gradient(-180deg, rgba(255,255,255,0.01) 0%, rgba(0,0,0,1) 100%); 
+        padding: 2%;
+         width: fit-content;
+         border-radius: 20px;
+         color: white;
+         font-weight: 600;
+      }
+
+      .contact {
+        margin-top:10% ;
+      }
