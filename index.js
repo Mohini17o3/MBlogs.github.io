@@ -40,6 +40,9 @@ try{
 app.get("/card1" ,(req , res)=>{
      res.render("card1.ejs");
 })
+app.get("/card2" ,(req , res)=>{
+     res.render("card2.ejs");
+})
 
 
 app.listen(port, () => {
