@@ -25,7 +25,7 @@
    
       a {
         text-decoration: none;
-        color: white;
+        color: black;
         
       }
 
@@ -47,7 +47,7 @@
     #about_section p {
       left: 50%;
       transform: translateX(30%);
-      font-size: 20px;
+      font-size: 16px;
       font-family: "Kaisei HarunoUmi", serif;
       font-weight :bold;
       font-style: normal;      
@@ -62,9 +62,9 @@
         body{
         background-image: url("/new_bg.png");
         background-blend-mode: overlay;
-        font-family: "Kaisei HarunoUmi", serif;
-        font-weight :bolder;
-        font-style: normal;  
+        font-family: "Roboto", sans-serif;
+        font-weight: 800;
+        font-style: normal;
     }
      
       .contact li{
@@ -163,11 +163,11 @@
         text-align: center;
         margin-top: 6%;     
         margin-bottom: 6%; 
-        background-color: rgba(123, 122, 125, 0.753);
+        background-color: rgba(86, 82, 94, 0.753);
         padding: 4%;
         margin-left : 6%;
          color: white;
-         font-weight: 300;
+         font-weight: 400;
          height:  fit-content;
          width: 80vw;
          border-radius: 20px;
