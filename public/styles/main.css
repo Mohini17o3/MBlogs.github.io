@@ -155,6 +155,7 @@
       }
 
       .descriptionCard1 {
+        /* font-family: ; */
         display: flex;
         flex-direction: column;
         justify-content: center;
@@ -162,12 +163,12 @@
         text-align: center;
         margin-top: 6%;     
         margin-bottom: 6%; 
-        background-color: rgba(96, 96, 96, 0.9);
-        padding: 2%;
+        background-color: rgba(123, 122, 125, 0.753);
+        padding: 4%;
         margin-left : 6%;
          color: white;
          font-weight: 300;
-         height:  100vh;
+         height:  fit-content;
          width: 80vw;
          border-radius: 20px;
       }
