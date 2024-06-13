@@ -2,15 +2,13 @@
       .header{
         position: fixed;
         margin: 0;
-        /* padding: 0.3%; */
         top: 0;
-        left: 50%;
-        transform: translateX(-50%);
         display: flex;
-        height: fit-content;
+        align-items: center;
+        justify-content: center;
+        height: min-content;
         width: 100vw;
-        font-size: 20px;
-        background-color:	rgb(132, 130, 122);
+        font-size: 35px;
         transition: opacity 0.5s ease;
 
       
@@ -25,7 +23,7 @@
    
       a {
         text-decoration: none;
-        color: black;
+        color:#F5F5DC ;
         
       }
 
@@ -47,22 +45,20 @@
       left: 50%;
       transform: translateX(30%);
       font-size: 20px;
-      font-weight :bold;
-      font-style: normal;      
+      font-weight :400;
       border-radius: 50px;
       text-align: center;
-      color: black;
-      background-color: rgb(132, 130, 122 , 0.7);  
       margin-top: 100px; 
       padding: 10%;
     }
 
         body{
-        background-image: url("/new_bg.png");
-        background-blend-mode: overlay;
+      
+        background-color: #71797E;
         font-family: "Roboto", sans-serif;
-        font-weight: 800;
+        font-weight: 500;
         font-style: normal;
+        color:#F5F5DC
     }
      
       .contact li{
@@ -71,20 +67,7 @@
         margin-left: 50%;
         justify-content: center;
         align-items: center;
-        background-image: linear-gradient(to right top, 
-        rgba(90, 57, 153, 0.5),
-        rgba(103, 71, 167, 0.5),
-        rgba(116, 85, 182, 0.5),
-        rgba(129, 99, 196, 0.5),   
-        rgba(142, 114, 211, 0.5),
-        rgba(146, 117, 219, 0.5),
-        rgba(149, 121, 228, 0.5),
-        rgba(153, 124, 236, 0.5),
-        rgba(147, 117, 240, 0.5),
-        rgba(141, 110, 244, 0.5),
-        rgba(134, 102, 247, 0.5),
-        rgba(126, 95, 251, 0.5)
-      );
+        
       width: fit-content;
       }
       li {
@@ -97,12 +80,17 @@
       #card{
         display: grid;
         position: relative;
-        grid-template-columns: repeat(1 , 1fr);
+        grid-template-columns: repeat(2 , 2fr);
         grid-template-rows: auto;
         margin-top: 100px;
         margin-left: 4%;
       
       }
+      
+    #card h3 {
+      font-size: x-large;
+      margin-top: 300px;
+  }
 
   .card{
     position: relative;
@@ -115,9 +103,10 @@
         opacity: 1;
     }
 
+
     .change{
      position: absolute;
-     top: 50%;
+     top: 30%;
      left: 45%;
      transform: translate(-50% , -70%); 
      background-color:rgba(96, 96, 96, 0.7); 
@@ -148,10 +137,7 @@
         align-items: center;
         justify-content: center;
       }
-      .card1 a{
-        color: black;
-        
-      }
+    
 
       .descriptionCard1 {
         display: flex;
@@ -159,11 +145,9 @@
         align-items: center;
         margin-top: 6%;     
         margin-bottom: 6%; 
-        background-color: rgb(132, 130, 122 , 0.8);  
         padding: 4%;
         margin-left : 6%;
-         color: black;
-         font-weight: 400;
+         font-weight: 300;
          height:  fit-content;
          width: 80vw;
          border-radius: 20px;
@@ -171,4 +155,28 @@
   
       .contact {
         margin-top:10% ;
+      }
+      #toggle-btn {
+        /* padding: 0.5em;
+        font-weight: 800; */
+      }
+      
+      #toggle-btn:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+      
+      .dark-mode-toggle {
+        background: #000;
+        color: #fff;
+      }
+      
+      #theme {
+        width: 100vw;
+        height: 100vh;
+      }
+      
+      .dark-mode-theme {
+        background:#191c22;
+        color: #fff;
       }
