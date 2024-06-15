@@ -49,6 +49,9 @@ app.get("/card3" ,(req , res)=>{
 app.get("/card4" ,(req , res)=>{
     res.render("card4.ejs");
 })
+app.get("/card5" ,(req , res)=>{
+    res.render("card5.ejs");
+})
 
 
 app.listen(port, () => {
