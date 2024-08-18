@@ -72,8 +72,8 @@ app.get("/contact" , async(req , res)=>{
     const user = req.user || null; 
 
 try{
-    const response = await axios.get('https://type.fit/api/quotes');
-    const quotes =  response.data.map(quote=>quote.text) ;
+    const response = await axios.get('https://zenquotes.io/api/quotes/');
+    const quotes =  response.data.map(quote=>quote.q) ;
     const randomQuote = quotes[Math.floor(Math.random()*quotes.length)];
     res.render('contact.ejs' , {randomQuote , user} );
 } catch(error){
