@@ -15,3 +15,84 @@
    </div>
 
 <%-include("partials/footer.ejs") %>
+
+<section id="comments">
+   <h2>Comments</h2>
+   <ul>
+       <% if (post && post.comments && post.comments.length > 0) { %>
+           <% post.comments.forEach(comment => { %>
+               <li>
+                   <p><%= comment.content %></p>
+                   <small>by <%= comment.user.name %> on <%= new Date(comment.createdAt).toDateString() %></small>
+               </li>   
+           <% }); %>
+       <% } else { %>
+           <p>No comments yet. Be the first to comment!</p>
+       <% } %>
+   </ul>
+
+   <div id="commentDiv">
+           <form id="comment-form" action="/card<%= post.numerical_id %>" method="POST">
+       <textarea name="content" placeholder="Add a comment"></textarea>
+       <button type="submit">Submit</button>
+       <!-- Hidden input to include post ID if necessary -->
+       <input type="hidden" name="numerical_id" value="<%= post.numerical_id %>">
+   </form>
+</div>
+
+</section>
+
+<%- include("partials/footer.ejs") %>
+
+<script>
+ 
+ document.addEventListener('DOMContentLoaded', () => {
+
+   document.getElementById('comment-form').addEventListener('submit', async (event) => {
+       event.preventDefault();
+
+       const content = document.querySelector('textarea[name="content"]').value;
+       const numericalId = document.querySelector('input[name="numerical_id"]').value;
+       const token = localStorage.getItem('token');
+
+       // Check if the token is present
+       if (!token) {
+           alert('You need to be logged in to post a comment.');
+           window.location.href = '/register'; // Redirect to login page if not authenticated
+           return;
+       }
+
+       try {
+           const response = await fetch(`/card${numericalId}`, {
+               method: 'POST',
+               headers: {
+                   'Content-Type': 'application/json',
+                   'Authorization': `Bearer ${token}`
+               },
+               body: JSON.stringify({ content }),
+           });
+
+   
+           if (response.status === 200) {
+
+               window.location.reload();
+
+           } 
+           
+           else if (response.status === 404) {
+               alert('You need to be logged in to post a comment.');
+               window.location.href = '/register';
+           } 
+           
+           else {
+               const error = await response.json();
+               alert(error.message);
+           }
+       } catch (error) {
+           console.error('Error creating comment:', error);
+       }
+   });
+
+});
+
+</script>

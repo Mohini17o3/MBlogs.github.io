@@ -29,10 +29,18 @@ const comment = async (req, res) => {
         // Fetch the updated post with comments
         const updatedPost = await prisma.post.findUnique({
             where: { id: post.id },
-            include: { comments: true },
+            include: {
+                 comments :  {
+                    include : {
+                        user :true,
+                    }
+                 }
+
+             },
+
         });
 
-        res.render(`card${numerical_id}`, { user: req.user || null , post: updatedPost  });
+        res.status(200).render(`card${numerical_id}`, { user: req.user || null , post: updatedPost  });
                 
     } catch (err) {
         console.error(err);

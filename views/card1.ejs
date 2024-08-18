@@ -56,7 +56,7 @@
         // Check if the token is present
         if (!token) {
             alert('You need to be logged in to post a comment.');
-            window.location.href = '/login'; // Redirect to login page if not authenticated
+            window.location.href = '/register'; // Redirect to login page if not authenticated
             return;
         }
 
@@ -70,13 +70,16 @@
                 body: JSON.stringify({ content }),
             });
 
-            if (response.ok) {
-                const data = await response.json();
-                console.log('Comment created:', data);
-                location.reload();
-            } else if (response.status === 404) {
+    
+            if (response.status === 200) {
+
+                window.location.reload();
+
+            } 
+            
+            else if (response.status === 404) {
                 alert('You need to be logged in to post a comment.');
-                window.location.href = '/login';
+                window.location.href = '/register';
             } 
             
             else {

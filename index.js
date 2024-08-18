@@ -37,14 +37,14 @@ app.use(bodyParser.urlencoded({
 
 
 
-app.get('/', authMiddleware, getRecentPost, (req, res) => {
+app.get('/',getRecentPost, (req, res) => {
     const user = req.user || null; // This assumes you have `req.user` set when a user is logged in
     res.render('index', { user });
 });
 
 
 
-app.get("/home" ,authMiddleware, getRecentPost ,(req,res)=>{
+app.get("/home" ,getRecentPost ,(req,res)=>{
     const user = req.user || null; 
     res.render('index.ejs' , {user});
 })
@@ -86,8 +86,8 @@ try{
 
 
 app.get("/card1" , authMiddleware,  async(req , res)=>{
-    console.log("User in route handler:", req.user);
     const user = req.user || null;
+    console.log("User in route handler:", req.user);
        try {
         const post = await prisma.post.findFirst(
             {
@@ -120,29 +120,213 @@ app.get("/card1" , authMiddleware,  async(req , res)=>{
     }
 
 })
-app.get("/card2" ,(req , res)=>{
-    const user = req.user || null; 
-     res.render("card2.ejs" , {user});
+app.get("/card2" , async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 2} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card2.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
-app.get("/card3" ,(req , res)=>{
-    const user = req.user || null; 
-    res.render("card3.ejs" , {user});
+
+app.get("/card3" ,async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 3} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card3.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
-app.get("/card4" ,(req , res)=>{
-    const user = req.user || null; 
-    res.render("card4.ejs" , {user});
+
+app.get("/card4" ,async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 4} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card4.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
-app.get("/card5" ,(req , res)=>{
-    const user = req.user || null; 
-    res.render("card5.ejs" , {user});
+
+app.get("/card5" ,async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 5} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card5.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
-app.get("/card6" ,(req , res)=>{
-    const user = req.user || null; 
-    res.render("card6.ejs" , {user});
+
+app.get("/card6" ,async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 6} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card6.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
-app.get("/card7" ,(req , res)=>{
-    const user = req.user || null; 
-    res.render("card7.ejs" , {user});
+app.get("/card7" ,async(req , res)=>{
+    const user = req.user || null;
+
+    try {
+        const post = await prisma.post.findFirst(
+            {
+                where : {numerical_id: 7} ,
+                include: {
+                    comments : {
+                        include : {
+                            user :true , 
+                        }
+                    } , 
+                },    
+            } , 
+        );
+
+        if(!post) {
+            return res.status(404).send({message : "Oops post not found"});
+
+        }
+
+        const comments = await prisma.comment.findMany(
+            {
+                where :{postId : post.id}
+            }
+        )
+       
+     res.render("card7.ejs" , { user, post ,comments });
+    } catch(err){
+       console.error(err);
+       res.status(500).send({message : "server error"})
+    }
 })
 
 
