@@ -1,0 +1,70 @@
+<form id="loginForm" method="POST"  >
+
+<h2>Glad to see you here !</h2>
+  <label>Email : </label>
+    <input type="email" name="email" placeholder="Email" required>
+
+ <label>Password : </label>
+    <input type="password" name="password" placeholder="Password" required>
+
+    <input type="submit" value="Login">
+    
+    <link rel="stylesheet" href="styles/main.css">
+
+  </form>
+
+  <script>
+     //Login logic
+   
+   document.getElementById('loginForm').addEventListener('submit' , async(event)=>{
+    event.preventDefault();
+
+    const email = document.querySelector('input[name = "email"]').value ;
+    const password = document.querySelector('input[name = "password"]').value;
+
+    try{
+      const response = await fetch('/login' , 
+         {
+          method : 'POST',
+          headers : {
+            'Content-Type' :'application/json',
+
+          } ,
+          body : JSON.stringify({email , password}),
+         }
+      );
+
+
+
+      if(response.ok) {
+
+        // console.log("response triggered")
+
+        const data = await response.json();
+        // console.log(data);
+        localStorage.setItem('token' , data.token) ;
+        console.log('Token stored:', data.token);
+
+
+//        await fetch('/card1', {
+//           method: 'POST',
+//            headers: {
+//     'Authorization': `Bearer ${localStorage.getItem('token')}`,
+//   },
+// });
+        
+        window.location.href = "/" ;
+
+
+      } else {  
+        const error = await response.json();
+        alert(error.messsage);
+      }
+
+    } catch(error) {
+      console.log('Login Failed' , error);
+    }
+})
+  </script>
+  
+ 

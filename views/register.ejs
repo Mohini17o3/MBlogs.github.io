@@ -1,0 +1,57 @@
+<form id="registerForm" method="POST" >
+    <h2>Glad to see you here !</h2>
+
+    <label>Name : </label>
+  <input type="text" name="name" placeholder="Name" required>
+  <label>Email : </label>
+
+  <input type="email" name="email" placeholder="Email" required>
+  <label>Password : </label>
+
+  <input type="password" name="password" placeholder="Password" required>
+
+  <input type="submit" value="Register">
+  <link rel="stylesheet" href="styles/main.css">
+
+</form>
+
+<script>
+  // register logic
+document.getElementById('registerForm').addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    // Corrected quotation marks in querySelector
+    const name = document.querySelector('input[name="name"]').value; 
+    const email = document.querySelector('input[name="email"]').value;
+    const password = document.querySelector('input[name="password"]').value;
+
+    try {
+        const response = await fetch('/register', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
+        });
+
+        if (response.ok) {
+            window.location.href = '/login'; // Redirect on successful registration
+        }
+        if(response.status === 400) {
+          window.location.href = '/login';
+        }
+        else {
+            // Check if response is JSON, then parse it
+            const error = await response.json().catch(() => ({ message: 'Registration failed' }));
+            alert(error.message);
+        }
+    } catch (error) {
+        console.error('Registration failed', error);
+        alert('An unexpected error occurred. Please try again.');
+    }
+});
+
+  
+
+
+</script>
