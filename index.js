@@ -87,7 +87,7 @@ try{
 
 app.get("/card1" , authMiddleware,  async(req , res)=>{
     const user = req.user || null;
-    console.log("User in route handler:", req.user);
+    // console.log("User in route handler:", req.user);
        try {
         const post = await prisma.post.findFirst(
             {
