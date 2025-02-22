@@ -14,6 +14,6 @@ jobs:
            - name: send request to server
              env:
                  SERVER_URL : $ {{ secrets.url }}
-           - run: curl -X GET $url || echo "server is unreachable"
+             run: curl -X GET $url || echo "server is unreachable"
 
     
