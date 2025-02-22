@@ -1,17 +1,19 @@
 name: Keep the server awake 
 
 env:
-  url: ${{secrets.url}}
+  url: ${{ secrets.url }}
      
 on :
   schedule:
    - cron: "*/15 * * * *"
 
-jobs :
+jobs:
     ping-server:
         runs-on: ubuntu-latest
         steps:
            - name: send request to server
+             env:
+                 SERVER_URL : $ {{ secrets.url }}
            - run: curl -X GET $url || echo "server is unreachable"
 
     
