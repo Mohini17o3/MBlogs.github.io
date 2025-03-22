@@ -1,32 +1,40 @@
 <%-include("partials/header.ejs") %>
 
  
- <div class="landing">
+ <section class="landing">
  <p>
 
-  Hi , I am Mohini , and I like writing my thoughts here sometimes , if you wanna read all of them, head over to  <a href="/Logs" style="color: rgba(148, 15, 189, 0.742);">   Logs </a> 😊
+  Hi !!  I am Mohini ,
+    and I like writing my thoughts here sometimes .<br>
+    If you wanna read all of them, head over to  <a href="/Logs" style="color: #4a423cc5;">   Logs </a> 😊
 
  </p>
   <br>
 
 
-</div>
+</section>
 
 
 <section id="card">
-  <h1>RECENT POSTS</h1>
+  <h2>RECENT POSTS</h2>
 
         <% posts.forEach(post => { %>
-              <div class="card">
                 <div class="card1">
                   <a href="card<%= post.numerical_id %>">
                     <img src="<%= post.imageUrl %>" alt="">
                   </a>
-
-                  </div>
+                  <div>
+                  <h2><%= post.title %></h2>
+                  <span style="color:#919186"> <p>
+                    <%= post.paragraph%>
+                    <br>
+                    <br>
+                    <a href="card<%= post.numerical_id %>">
+                      <span style= "font-size: larger;">Read more .....</span></a> 
+               </p>
+           </span>  
                 </div>
-              </div>  
-              <div><h2><%= post.title %></h2></div>
+                  </div>
           <% }) %>
 
 

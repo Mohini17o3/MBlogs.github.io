@@ -30,6 +30,8 @@ model Post {
   createdAt    DateTime  @default(now())
   comments     Comment[]
   numerical_id Int
+  paragraph    String?
+  localLink    String?
 }
 
 model Comment {
