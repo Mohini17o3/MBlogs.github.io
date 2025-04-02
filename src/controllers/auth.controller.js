@@ -7,10 +7,10 @@ dotenv.config();
 
 const prisma = new PrismaClient();
 const secretKey = process.env.secret || 'yourSecretKey';
-// const secret = "mysecret";
 
-// const refreshTokenSecret = process.env.refreshSecret;
-// const refreshTokens = [];
+export const authUser = async (req , res) => {
+    res.json({user : req.user || null} ) ;
+}
 
 
 export const registerUser = async (req, res) => {
@@ -63,16 +63,8 @@ export const loginUser = async (req, res) => {
             {id: user.id, 
             email: user.email },
             secretKey,
-            { expiresIn: '20m' }
+            { expiresIn: '2d' }
         );
-
-        // const refreshToken = jwt.sign(
-        //     {id : user.id , 
-        //      email : user.email 
-        //     } , 
-        //     refreshTokenSecret
-        // );
-        // refreshTokens.push(refreshToken);
 
         res.status(200).json({ token });
             } 
