@@ -144,9 +144,8 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        margin-top: 1%;     
         margin-bottom: 6%; 
-        padding: 4%;
+        padding: 8%;
          font-weight: 300;
          height:  fit-content;
          width: 100%;
@@ -230,7 +229,7 @@
     }
 
     #comment-form button {
-        background-color: #448cd8;
+        background-color: #6e4c3d;
         color: white;
         border: none;
         padding: 10px 20px;
@@ -245,8 +244,30 @@
     
     }
 
+    .delete-btn{
+      background-color: #6e4c3d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 40px;
+      width: fit-content; 
+      margin: 20px auto 0;
+      display: flex;
+      align-items: flex-start;
+  
+    }
+
+    .delete-comment-btn:hover {
+      background-color: #b33000;
+
+    }
+
     #comment-form button:hover {
-        background-color: #0056b3;
+        background-color: #b33000;
     }
 
     #comment-form input[type="hidden"] {

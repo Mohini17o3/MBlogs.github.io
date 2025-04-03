@@ -18,84 +18,142 @@
    </div>
 
 </div>
-
 <section id="comments">
-   <h2>Comments</h2>
-   <ul>
-       <% if (post && post.comments && post.comments.length > 0) { %>
-           <% post.comments.forEach(comment => { %>
-               <li>
-                   <p><%= comment.content %></p>
-                   <small>by <%= comment.user.name %> on <%= new Date(comment.createdAt).toDateString() %></small>
-               </li>   
-           <% }); %>
-       <% } else { %>
-           <p>No comments yet. Be the first to comment!</p>
-       <% } %>
-   </ul>
+    <h2>Comments</h2>
+    <ul id="comments-list">
+        
+    </ul>
 
-   <div id="commentDiv">
-           <form id="comment-form" action="/card<%= post.numerical_id %>" method="POST">
-       <textarea name="content" placeholder="Add a comment"></textarea>
-       <button type="submit">Submit</button>
-       <!-- Hidden input to include post ID if necessary -->
-       <input type="hidden" name="numerical_id" value="<%= post.numerical_id %>">
-   </form>
-</div>
-
+    <div id="commentDiv">
+        <form id="comment-form" method="POST">
+            <textarea name="content" placeholder="Add a comment"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
 </section>
+
 
 <%- include("partials/footer.ejs") %>
 
+
 <script>
+  
+  document.addEventListener('DOMContentLoaded', async () => {
+    console.log("comment doc loaded ");
+    const commentsList = document.getElementById('comments-list');
+    const commentForm = document.getElementById('comment-form');
+    const postId = '<%= post.numerical_id %>';  // Post ID
+    const token = localStorage.getItem('token');
+    let currentUser = null ;
  
- document.addEventListener('DOMContentLoaded', () => {
+    async function fetchLoggedUser(){
+        if(!token) {
+            return ;
+        } 
 
-   document.getElementById('comment-form').addEventListener('submit', async (event) => {
-       event.preventDefault();
+        try {
+            const res = await fetch('/auth/user' , {
+                headers : {
+                    "Authorization" : `Bearer ${token}`, 
+                }
+            }) ;
+            if(res.ok) {
+                const data =  await res.json()  ;
+                currentUser = data.user ; 
+            }
 
-       const content = document.querySelector('textarea[name="content"]').value;
-       const numericalId = document.querySelector('input[name="numerical_id"]').value;
-       const token = localStorage.getItem('token');
+        }catch(e) {
+            console.log(e) ; 
+        }
 
-       // Check if the token is present
-       if (!token) {
-           alert('You need to be logged in to post a comment.');
-           window.location.href = '/register'; // Redirect to login page if not authenticated
-           return;
-       }
+    }
 
-       try {
-           const response = await fetch(`/card${numericalId}`, {
-               method: 'POST',
-               headers: {
-                   'Content-Type': 'application/json',
-                   'Authorization': `Bearer ${token}`
-               },
-               body: JSON.stringify({ content }),
-           });
 
-   
-           if (response.status === 200) {
+      
+     async function loadComments () {
+        try {
+            const res = await fetch(`/comments/${postId}`) ;
+            const {comments} = await res.json() ; 
+             commentsList.innerHTML = ''; 
+             
+            comments.forEach((comment) => {
+                const li = document.createElement('li') ;
+                li.innerHTML = `
+                <p> ${comment.content}</p>
+                <small>by ${comment.user.name} on ${new Date (comment.createdAt).toDateString()}</small>
+                 ${currentUser && currentUser.id === comment.user.id ? `
+                 <button class = "delete-btn" data-id = "${comment.id}" >Delete</button>` : ""}
+                
+                 `; 
+             commentsList.appendChild(li) ;
 
-               window.location.reload();
+                         // event listeners
+            document.querySelectorAll('.delete-btn').forEach(button => {
+                button.addEventListener("click" , () => deleteComment(button.dataset.id)) ;
+            }); 
+                
+            })  ;
 
-           } 
-           
-           else if (response.status === 404) {
-               alert('You need to be logged in to post a comment.');
-               window.location.href = '/register';
-           } 
-           
-           else {
-               const error = await response.json();
-               alert(error.message);
-           }
-       } catch (error) {
-           console.error('Error creating comment:', error);
-       }
-   });
+
+
+        } catch(e) {
+            console.log('Error loading comments:', e);
+
+        }
+         
+    }
+
+    // Add comment
+    commentForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const content = commentForm.querySelector('textarea[name="content"]').value;
+
+        if (!token) {
+            alert('Please log in to comment.');
+            return;
+        }
+
+        try {
+            await fetch(`/comments${postId}/comments`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                body: JSON.stringify({ content })
+            });
+
+            commentForm.reset();
+            loadComments();
+        } catch (error) {
+            console.error('Error adding comment:', error);
+        }
+    });
+
+    // Delete comment
+    async function deleteComment(commentId) {
+        if (!token) {
+            alert('Please log in to delete comments.');
+            return;
+        }
+
+        try {
+            await fetch(`/comments${postId}/${commentId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            loadComments();
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
+    }
+
+    await fetchLoggedUser(); 
+    loadComments();  
 
 });
-
 </script>

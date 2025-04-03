@@ -1,9 +1,12 @@
 import { Router } from 'express';
-import comment from "../controllers/comment.controller.js"
+import { deleteComment, getComment, postComment } from "../controllers/comment.controller.js"
 import authMiddleware from '../../authMiddleware.js';
 
 const router = Router();
-router.post('/card:numerical_id', authMiddleware, comment);
+router.get('/comments/:numerical_id', getComment);
 
+router.post('/comments:numerical_id/comments', authMiddleware, postComment);
+// router.patch('/comments:numerical_id/comments' , authMiddleware , comment);
+router.delete('/comments:numerical_id/:comment_id' , authMiddleware , deleteComment); 
 
 export default router;
