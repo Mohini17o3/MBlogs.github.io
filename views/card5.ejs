@@ -39,7 +39,6 @@ But the only good thing is that I have realised it now , I had a friend who used
     </div>
 </section>
 
-
 <%- include("partials/footer.ejs") %>
 
 
@@ -51,6 +50,7 @@ But the only good thing is that I have realised it now , I had a friend who used
     const commentForm = document.getElementById('comment-form');
     const postId = '<%= post.numerical_id %>';  // Post ID
     const token = localStorage.getItem('token');
+    let loading  = false ; 
     let currentUser = null ;
  
     async function fetchLoggedUser(){
@@ -73,15 +73,23 @@ But the only good thing is that I have realised it now , I had a friend who used
             console.log(e) ; 
         }
 
+        loadComments();  
+
     }
 
 
       
      async function loadComments () {
+        loading = true; 
+        commentsList.innerHTML = `<p>Loading comments...</p>`; 
+
         try {
             const res = await fetch(`/comments/${postId}`) ;
             const {comments} = await res.json() ; 
-             commentsList.innerHTML = ''; 
+
+            loading = false; 
+            commentsList.innerHTML = "" ;
+
              
             comments.forEach((comment) => {
                 const li = document.createElement('li') ;
@@ -89,15 +97,20 @@ But the only good thing is that I have realised it now , I had a friend who used
                 <p> ${comment.content}</p>
                 <small>by ${comment.user.name} on ${new Date (comment.createdAt).toDateString()}</small>
                  ${currentUser && currentUser.id === comment.user.id ? `
-                 <button class = "delete-btn" data-id = "${comment.id}" >Delete</button>` : ""}
-                
-                 `; 
+               <div class = "commentButtonOuter"><button class = "delete-btn" data-id = "${comment.id}" >Delete</button> <button class="edit-btn" data-id ="${comment.id}"> Edit </button> </div>  ` : ""
+                 
+                 }           
+                 `  ; 
              commentsList.appendChild(li) ;
 
-                         // event listeners
+             // event listeners
             document.querySelectorAll('.delete-btn').forEach(button => {
                 button.addEventListener("click" , () => deleteComment(button.dataset.id)) ;
             }); 
+
+            document.querySelectorAll('.edit-btn').forEach(button => {
+                 button.addEventListener("click" , () => editComment(button.dataset.id) ) ;
+            })
                 
             })  ;
 
@@ -113,7 +126,10 @@ But the only good thing is that I have realised it now , I had a friend who used
     // Add comment
     commentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
-        
+        const confirmation = window.confirm("Sure to post ? ") ;
+        if(!confirmation) {
+            return ; 
+        }
         const content = commentForm.querySelector('textarea[name="content"]').value;
 
         if (!token) {
@@ -121,8 +137,12 @@ But the only good thing is that I have realised it now , I had a friend who used
             return;
         }
 
+          const tempComment = document.createElement("li") ;
+           tempComment.innerHTML = `<p>${content}</p>
+                                      <small>Posting ....</small>   `;
+            commentsList.prepend(tempComment) ;                          
         try {
-            await fetch(`/comments${postId}/comments`, {
+           const res =  await fetch(`/comments${postId}/comments`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -131,12 +151,70 @@ But the only good thing is that I have realised it now , I had a friend who used
                 body: JSON.stringify({ content })
             });
 
+            if(res.ok) {
+                const { comment } = await res.json();
+
+               tempComment.innerHTML = `
+                <p>${comment.content}</p>
+                <small>by ${comment.user.name} on ${new Date(comment.createdAt).toDateString()}</small>
+            `;
+
             commentForm.reset();
-            loadComments();
+            loadComments() ;
+            } else {
+                tempComment.innerHTML = `<p>Error adding comment. Please try again.</p>`;
+            }
+           
         } catch (error) {
             console.error('Error adding comment:', error);
+            tempComment.innerHTML = `<p>Error adding comment. Please try after again later.</p>`;
         }
     });
+
+
+   //  edit comment 
+
+   async function editComment(commentId) {
+
+      if(!token) {
+        alert('Please log in to edit comments.');
+            return;
+      }
+
+      const commentElement = document.querySelector(`[data-id ="${commentId}"]`).closest("li");
+      const commentText = commentElement.querySelector("p").innerText;
+      const newContent = prompt("Edit your comment:", commentText);
+
+
+      if (!newContent || newContent.trim() === "") {
+        alert("Comment cannot be empty.");
+        return;
+    }
+
+    try {
+        const res = await fetch(`/comments${postId}/${commentId}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+            body: JSON.stringify({ content: newContent })
+        });
+
+        if (res.ok) {
+            loadComments(); 
+        } else {
+            alert("Error editing comment. Please try again.");
+        }
+
+    } catch (e) {
+        console.error("Error editing comment:", e);
+    }
+}
+
+
+   
+ 
 
     // Delete comment
     async function deleteComment(commentId) {
@@ -145,6 +223,17 @@ But the only good thing is that I have realised it now , I had a friend who used
             return;
         }
 
+        const confirmation = window.confirm("Are you sure you want to delete?");
+        if (!confirmation) return;
+
+
+         const deletionButton = document.querySelector(`.delete-btn[data-id = "${commentId}"]`);
+
+     if (deletionButton) {
+            deletionButton.innerText = "Deleting...";
+            deletionButton.disabled = true;
+        }
+        
         try {
             await fetch(`/comments${postId}/${commentId}`, {
                 method: 'DELETE',
@@ -156,11 +245,12 @@ But the only good thing is that I have realised it now , I had a friend who used
             loadComments();
         } catch (error) {
             console.error('Error deleting comment:', error);
+            commentsList.innerHTML = `<p>Error deleting comment. Please try again.</p>`;
         }
     }
-
     await fetchLoggedUser(); 
-    loadComments();  
+    loadComments();
+
 
 });
 </script>
