@@ -118,16 +118,19 @@
     // Add comment
     commentForm.addEventListener('submit', async (e) => {
         e.preventDefault();
+
+        
+        if (!token) {
+            alert('Please log in to comment.');
+            return;
+        }
+        
         const confirmation = window.confirm("Sure to post ? ") ;
         if(!confirmation) {
             return ; 
         }
         const content = commentForm.querySelector('textarea[name="content"]').value;
 
-        if (!token) {
-            alert('Please log in to comment.');
-            return;
-        }
 
           const tempComment = document.createElement("li") ;
            tempComment.innerHTML = `<p>${content}</p>
@@ -241,6 +244,7 @@
         }
     }
     await fetchLoggedUser(); 
+    loadComments();
 
 });
 </script>
