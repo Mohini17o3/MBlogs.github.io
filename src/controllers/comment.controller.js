@@ -36,6 +36,7 @@ export const getComment = async (req, res) => {
    export const postComment =  async(req , res )=>{
     const { numerical_id } = req.params;
     const { content} = req.body;
+    const user = req.user;
         try {
 
                 
@@ -52,15 +53,16 @@ export const getComment = async (req, res) => {
               return res.status(404).json({message: "post does not exist"}) ;
            }
             // Create comment
-            await prisma.comment.create({
+         const newComment=  await prisma.comment.create({
                 data: {
                     content,
                     postId: post.id,
                     userId: req.user.id 
-                } 
+                }, 
+                include: {user : true} , 
             });
 
-            res.status(201).json(comment);
+            res.status(201).json({comment :newComment});
 
                     
         } catch (err) {
@@ -68,11 +70,67 @@ export const getComment = async (req, res) => {
             res.status(500).send({ message: "Server error" });
         }
     }
+
+    export const patchComment = async(req , res) => {
+        console.log("path hit");
+
+        const {numerical_id , comment_id} = req.params ;
+        const {content} = req.body ; 
+        const user = req.user ; 
+        
+        try {
+
+            if(!user) {
+                return res.status(404).json({message : "unauthorised user"}) ;
+                 
+            }
+
+            const post = await prisma.post.findFirst({
+                where : {numerical_id : parseInt(numerical_id)} 
+            }) ;
+
+            if(!post) {
+                return res.status(404).json({message : "Post does not exist"});
+            }
+            const comment = await prisma.comment.findFirst({
+                where: {
+                    id: comment_id,  
+                    postId: post.id,
+                    userId: user.id
+                }
+            });
+
+            if(!comment) {
+                return res.status(404).json({message : "comment not found or you are not authorised to  edit this comment"}) ; 
+
+            }
+
+            const updatedComment = await prisma.comment.update({
+                where : {
+                    id : comment.id , 
+                } , 
+                data : {content} , 
+            }) ;
+
+            return res.status(200).json({
+                message : "comment updated successfully " , 
+                comment  : updatedComment , 
+            })
+
+
+        }catch(e) {
+            console.log(e)  ;
+            res.status(500).send({message : "Internal server error"}) ; 
+            
+        }
+
+
+    }
     
       
     export const deleteComment =  async(req , res)=>{
 
-        const {comment_id} = req.params;
+        const {comment_id } = req.params;
         const user =  req.user;
        
        try {

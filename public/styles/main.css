@@ -244,6 +244,15 @@
     
     }
 
+
+    .commentButtonOuter {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap : 10px;
+    }
+
     .delete-btn{
       background-color: #6e4c3d;
       color: white;
@@ -254,17 +263,36 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
       margin-top: 40px;
-      width: fit-content; 
-      margin: 20px auto 0;
-      display: flex;
-      align-items: flex-start;
+      width: fit-content;   
   
     }
 
-    .delete-comment-btn:hover {
+    .delete-btn:hover {
       background-color: #b33000;
 
     }
+
+    .edit-btn{
+      background-color: #6e4c3d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 40px;
+      width: fit-content; 
+
+  
+    }
+
+    .edit-btn:hover {
+      background-color: #b33000;
+
+    }
+
+
 
     #comment-form button:hover {
         background-color: #b33000;
